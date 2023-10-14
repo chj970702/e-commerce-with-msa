@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
-public class RequestUser {
+public class UserRequest {
     @NotNull(message = "Email cannot be null")
     @Size(min = 2, message = "Email not be less than two characters")
     private String email;
