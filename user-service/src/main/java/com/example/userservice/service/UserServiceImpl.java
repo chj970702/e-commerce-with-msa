@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
         User user = mapper.map(userDto, User.class);
         System.out.println(userDto.getPwd());
         user.setEncryptedPwd(passwordEncoder.encode(userDto.getPwd()));
-
+        System.out.println("");
         userRepository.save(user);
 
         UserDto returnUserDto = mapper.map(user, UserDto.class);
