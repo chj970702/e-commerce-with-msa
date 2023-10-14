@@ -53,11 +53,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserResponse> getUsers() {
-        List<User> userList = userRepository.findAll();
-        List<UserResponse> responseList = new ArrayList<>();
-        userList.forEach(v -> {
-            responseList.add(new ModelMapper().map(v, UserResponse.class));
+        List<User> users = userRepository.findAll();
+        List<UserResponse> responses = new ArrayList<>();
+        users.forEach(user -> {
+            responses.add(new ModelMapper().map(user, UserResponse.class));
         });
-        return responseList;
+        return responses;
     }
 }
