@@ -8,13 +8,14 @@ import com.example.userservice.vo.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,12 +30,10 @@ public class UserServiceImpl implements UserService {
         ModelMapper mapper = new ModelMapper();
         mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         User user = mapper.map(userDto, User.class);
-        System.out.println(userDto.getPwd());
         user.setEncryptedPwd(passwordEncoder.encode(userDto.getPwd()));
         userRepository.save(user);
 
         UserDto returnUserDto = mapper.map(user, UserDto.class);
-        System.out.println(returnUserDto.getPwd());
         return returnUserDto;
     }
 
@@ -59,5 +58,21 @@ public class UserServiceImpl implements UserService {
             responses.add(new ModelMapper().map(user, UserResponse.class));
         });
         return responses;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getEncryptedPwd(),
+                true, true, true, true, new ArrayList<>());
+    }
+
+    @Override
+    public UserDto getUserDetailsByEmail(String username) {
+        User user = userRepository.findByEmail(username)
+                .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
+        UserDto userDto = new ModelMapper().map(user, UserDto.class);
+        return userDto;
     }
 }
