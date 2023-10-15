@@ -32,7 +32,7 @@ spring:
             - Method=POST
           filters:
             - RemoveRequestHeader=Cookie
-            - RewritePath=/user-service/(?<segment>.*), /$\{segment}
+            - RewritePath=/user-service/(?<segment>.*), /$\{segment} # /request URI의 user-service 제거하고 segment(/login)만 남김
         - id: user-service
           uri: lb://USER-SERVICE
           predicates:
