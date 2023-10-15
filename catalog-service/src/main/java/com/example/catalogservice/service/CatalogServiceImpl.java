@@ -23,9 +23,7 @@ public class CatalogServiceImpl implements CatalogService{
         List<Catalog> catalogs = catalogRepository.findAll();
         List<CatalogResponse> catalogResponses = new ArrayList<>();
         catalogs.forEach(catalog -> {
-            System.out.println(catalog.getStock());
             catalogResponses.add(new ModelMapper().map(catalog, CatalogResponse.class));
-            System.out.println(catalogResponses.get(0).getStock());
         });
 
         return catalogResponses;
