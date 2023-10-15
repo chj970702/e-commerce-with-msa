@@ -24,12 +24,17 @@ spring:
           uri:
             lb://USER-SERVICE # eureka? ??? application-name
           predicates:
-            - Path=/user-service/** # ?????? ???? URI
+            - Path=/user-service/** # ?????? ???? URI 입니다.
         - id: catalog-service
           uri:
             lb://CATALOG-SERVICE
           predicates:
             - Path=/catalog-service/**
+        - id: order-service
+          uri:
+            lb://ORDER-SERVICE
+          predicates:
+            - Path=/order-service/**
 
 
 
