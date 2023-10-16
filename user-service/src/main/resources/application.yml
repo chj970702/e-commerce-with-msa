@@ -30,7 +30,9 @@ logging:
   level:
     com.example.userservice: DEBUG
 
-# AuthenticationFilter에서 token 생성을 위한 값
-token:
-  expiration_time: 86400000
-  secret: user_token # 임의값
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, beans # refresh는 POST방식 (config 서버 갱신)
+
