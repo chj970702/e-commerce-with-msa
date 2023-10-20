@@ -30,6 +30,9 @@ dependencyManagement {
 dependencies {
     implementation 'org.springframework.cloud:spring-cloud-config-server'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'  // actuator
+    implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap' // bootstrap
+    implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp' // amqp(rabbitMQ)
 }
 
 
