@@ -4,6 +4,11 @@ server:
 spring:
   application:
     name: user-service
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
   h2:
     console:
       enabled: true
@@ -34,5 +39,5 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans # refresh는 POST방식 (config 서버 갱신)
+        include: refresh, health, beans, busrefresh # refresh는 POST방식 (config 서버 갱신)
 
