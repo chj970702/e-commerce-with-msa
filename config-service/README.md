@@ -21,3 +21,19 @@ Actuator를 사용하여 새로운 구성 값을 동적으로 적용합니다.
 ### 3️⃣ Spring Cloud Bus 사용
 Spring Cloud Bus를 사용하여 여러 서비스에 동시에 구성 변경을 알릴 수 있습니다.
 
+---
+
+![img.png](img.png)
+
+
+### 🔍 Spring Cloud Bus
+Spring Cloud Bus는 마이크로서비스 아키텍처에서 설정 변경을 효과적으로 전파하기 위한 메시징 시스템입니다.
+
+### 🔍 RabbitMQ
+RabbitMQ는 AMQP(Advanced Message Queuing Protocol)를 구현한 오픈 소스 메시지 브로커로, 메시지 전달의 책임을 집니다.
+
+### 🤝 Spring Cloud Bus & RabbitMQ
+- Spring Cloud Bus와 RabbitMQ의 조합은 마이크로서비스 환경에서 구성 변경 이벤트를 효과적으로 처리합니다. 
+- Spring Cloud Bus는 설정 변경을 알리는 역할을 하며, RabbitMQ는 해당 메시지를 실제로 전달하는 역할을 합니다.
+
+
