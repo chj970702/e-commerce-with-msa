@@ -8,10 +8,15 @@ import com.example.userservice.vo.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +28,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
+    private final Environment env;
+    private final RestTemplate restTemplate;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -43,7 +50,18 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
 
-        List<OrderResponse> orders = new ArrayList<>();
+        // List<OrderResponse> orders = new ArrayList<>();
+
+        /**
+         * MicroService간 통신
+         * RestTemplate과 getBody 사용
+         * UserMicroService에서 OrderMicroService로 데이터 요청해서 가져옴
+         */
+        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+        ResponseEntity<List<OrderResponse>> orderResponseList =  restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<OrderResponse>>() {
+        });
+        List<OrderResponse> orders = orderResponseList.getBody();
         userDto.setOrders(orders);
 
         UserResponse userResponse = new ModelMapper().map(userDto, UserResponse.class);
