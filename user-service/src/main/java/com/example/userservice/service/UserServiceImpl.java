@@ -1,5 +1,6 @@
 package com.example.userservice.service;
 
+import com.example.userservice.client.OrderServiceClient;
 import com.example.userservice.dto.UserDto;
 import com.example.userservice.entity.User;
 import com.example.userservice.repository.UserRepository;
@@ -29,7 +30,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final Environment env;
-    private final RestTemplate restTemplate;
+//    private final RestTemplate restTemplate;
+    private final OrderServiceClient orderServiceClient;
 
     @Override
     public UserDto createUser(UserDto userDto) {
@@ -50,18 +52,22 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new IllegalArgumentException("User Not Found"));
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
 
-        // List<OrderResponse> orders = new ArrayList<>();
-
         /**
          * MicroService간 통신
          * RestTemplate과 getBody 사용
          * UserMicroService에서 OrderMicroService로 데이터 요청해서 가져옴
          */
-        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
-        ResponseEntity<List<OrderResponse>> orderResponseList =  restTemplate.exchange(orderUrl, HttpMethod.GET, null,
-                new ParameterizedTypeReference<List<OrderResponse>>() {
-        });
-        List<OrderResponse> orders = orderResponseList.getBody();
+//        String orderUrl = String.format(env.getProperty("order_service.url"), userId);
+//        ResponseEntity<List<OrderResponse>> orderResponseList =  restTemplate.exchange(orderUrl, HttpMethod.GET, null,
+//                new ParameterizedTypeReference<List<OrderResponse>>() {
+//        });
+
+        /**
+         * MicroService간 통신
+         * Feign Client 사용
+         * UserMicroService에서 OrderMicroService로 데이터 요청해서 가져옴
+         */
+        List<OrderResponse> orders = orderServiceClient.getOrders(userId);
         userDto.setOrders(orders);
 
         UserResponse userResponse = new ModelMapper().map(userDto, UserResponse.class);
