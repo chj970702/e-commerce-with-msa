@@ -32,7 +32,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'  // actuator
     implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap' // bootstrap
-    implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp' // amqp(rabbitMQ)
+    // implementation 'org.springframework.cloud:spring-cloud-starter-bus-amqp' // amqp(rabbitMQ)
 }
 
 
