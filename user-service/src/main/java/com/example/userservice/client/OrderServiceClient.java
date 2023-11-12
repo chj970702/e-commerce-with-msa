@@ -10,6 +10,9 @@ import java.util.List;
 @FeignClient(name = "order-service")
 public interface OrderServiceClient {
 
+    /**
+     * order-service의 controller 호출
+     */
     @GetMapping("/order-service/{userId}/orders")
     List<OrderResponse> getOrders(@PathVariable("userId") String userId);
 }

@@ -6,23 +6,22 @@ import com.example.userservice.entity.User;
 import com.example.userservice.repository.UserRepository;
 import com.example.userservice.vo.OrderResponse;
 import com.example.userservice.vo.UserResponse;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.env.Environment;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -66,10 +65,18 @@ public class UserServiceImpl implements UserService {
          * MicroService간 통신
          * Feign Client 사용
          * UserMicroService에서 OrderMicroService로 데이터 요청해서 가져옴
+         * Feign Exception Handling
          */
+//        List<OrderResponse> orders = null;
+//        try {
+//            orders = orderServiceClient.getOrders(userId);
+//        } catch(FeignException ex) {
+//            log.error(ex.getMessage());
+//        }
+
+        // ErrorDecoder
         List<OrderResponse> orders = orderServiceClient.getOrders(userId);
         userDto.setOrders(orders);
-
         UserResponse userResponse = new ModelMapper().map(userDto, UserResponse.class);
         return userResponse;
     }
